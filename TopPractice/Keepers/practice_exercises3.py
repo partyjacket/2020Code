@@ -45,13 +45,21 @@ listoflens = ['dddd', 'bb', 'ccc', 'a']
 
 print(sorted(listoflens, key=lambda x: len(x)))
 
+listoflens.sort(key=lambda x: len(x))
+print(listoflens)
+
 
 
 # # create a url object using the list below with map, then do it again making object url2 with list comprehension
 ipadd = ['192.168.10.1', '192.168.10.2']
 
+url1 = list(map(lambda x: 'http{}'.format(x), ipadd))
+print(url1)
 
-
+url2 = ['http:{}'.format(x) for x in ipadd]
+url3 = list('http:{}'.format(x) for x in ipadd)
+print(url3)
+print(url2)
 
 
 
@@ -61,16 +69,20 @@ namelist = ['Jason Zatterson', 'Zig Boy']
 namedict = {'Jason': 'Zatterson', 'Zig': 'Boy'}
 newtuple = [('Jason Zatterson'), ('Zig Boy')]
 
-
+print(sorted(namelist, key=lambda x: x.split()[1]))
+print(sorted(namedict.items(), key=lambda x: x[1]))
 
 #add one to each number and return list using a map
 numlist = [1, 2, 3]
+print(list(map(lambda x: x ** x, numlist)))
 
 
 
 # #sort ips based on last octet
 listofips = ['1.1.1.6', '4.2.2.4', '2.9.9.2', '3.3.3.3', '5.2.3.1', '10.234.2.5']
-
+print(sorted(listofips, key=lambda x: x[-1]))
+listofips.sort(key=lambda x: x[-1])
+print(listofips)
 
 
 
@@ -92,29 +104,61 @@ devs = {'c1': '192.168.10.1'}
 cmds = 'show version'
 
 
-#Create rundictcomp function to create a dictionary of the device and eapi_call using dictionary compression
+#Create rundictcomp function to create a dictionary of the device called dictofdevs and eapi_call using dictionary compression
+def rundictcomp():
+    dictofdevs = {k: Buildit(v).cmds(cmds) for k, v in devs.items()}
+    return dictofdevs
+
+
+#Create runmaplambda1 function to create a dictionary of the devices called dictofdevs1 and eapi_call using map and lambda
+#by sending a tuple (.items()) to the map function.
+def runmaplambda1():
+    dictofdevs1 = dict(map(lambda x: (x[0], Buildit(x[1]).cmds(cmds)), devs.items()))
+    print(dictofdevs1)
+runmaplambda1()
+
+#Create runmaplambda2 function to create a dictionary of the devices called dictofdevs2 and eapi_call using map and lambda
+#by sending mapping the key and value variables seperately to k, v in the lambda
+
+def runmaplambda2():
+    dictofdevs2 = dict(map(lambda k, v: (k, Buildit(v).cmds(cmds)), devs.keys(), devs.values()))
+    print(dictofdevs2)
+runmaplambda2()
+
+
+# Create rundict_from_2list function to create a dictionary of the device and eapi_call by first splitting
+# devs into 2 lists (k,v) then create usedict object to create a dict comprehension of the 2 sets of lists
+def rundict_from_2list():
+    list1 = [k for k in devs.keys()]
+    list2 = [v for v in devs.values()]
+    returndict = {k: Buildit(v).cmds(cmds) for k in list1 for v in list2}
+    return returndict
+
+print(rundict_from_2list())
 
 
 
-#Create runmaplambda function to create a dictionary of the device and eapi_call using map and lambda
+
+# 1 step solution- Create rundict_tuple function to create a list comprehension of tuples of the device and eapi_call
+#by first packing devs into tuple
+
+def rundict_tuple():
+    list1 = [(x, Buildit(y).cmds(cmds)) for x, y in devs.items()]
+    return list1
+print(rundict_tuple())
 
 
 
-###
-# Create rundict_from_2list function to create a dictionary of the device and eapi_call by first splitting devs into 2 lists (k,v)
-# then create usedict object to create a dict comprehension of the 2 sets of lists###
+# 2 step solution - This will create a dict from a tuple that we first instantiate (this is ultimately the same as using
+# .items() but manually) Create rundict_from_tuple function to create a list of tuples of the device and eapi_call by
+# first packing devs into tuple (k,v) by creating from_tuple tuple that holds the key/value. Then create a dict of
+# device + eapi called tuple_map to map each tuple in from_tuple.
+def rundict_from_tuple():
+    from_tuple = [(k, v) for k, v in devs.items()]
+    tuple_map = dict(map(lambda x: (x[0], Buildit(x[1]).cmds(cmds)), from_tuple))
+    return tuple_map
 
-
-
-# 1 step solution- Create rundict_tuple function to create a list comprehension of tuples of the device and eapi_call by first packing devs into tuple###
-
-
-
-# 2 step solution - Create rundict_from_tuple function to create a list of tuples of the device and eapi_call by first packing devs into tuple (k,v)
-# by creating from_tuple tuple that holds the key/value. Then call from_tuple in a tuple_map to map###
-
-
-
+print(rundict_from_tuple())
 
 # use 3 different versions of execute function - execute1, execute2, and execute3
 #execute1 - create a list of ips using list comprehension and get value by using dict key reference (dict[key]).

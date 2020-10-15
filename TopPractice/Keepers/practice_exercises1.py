@@ -94,14 +94,23 @@ def rundictcomp():
 print(rundictcomp())
 
 
-#Create runmaplambda function to create a dictionary of the device and eapi_call using map and lambda
-def runmaplambda():
-    map_lambda = dict(map(lambda x: (x[0], Buildit(x[1]).cmds(cmds)), devs.items()))
-    return map_lambda
-print(runmaplambda())
+#Create runmaplambda1 function to create a dictionary of the devices called dictofdevs1 and eapi_call using map and lambda
+#by sending a tuple (.items()) to the map function.
+def runmaplambda1():
+    dictofdevs1 = dict(map(lambda x: (x[0], Buildit(x[1]).cmds(cmds)), devs.items()))
+    print(dictofdevs1)
+runmaplambda1()
+
+#Create runmaplambda2 function to create a dictionary of the devices called dictofdevs2 and eapi_call using map and lambda
+#by sending mapping the key and value variables seperately to k, v in the lambda
+
+def runmaplambda2():
+    dictofdevs2 = dict(map(lambda k, v: (k, Buildit(v).cmds(cmds)), devs.keys(), devs.values()))
+    print(dictofdevs2)
+runmaplambda2()
 
 
-###
+
 # Create rundict_from_2list function to create a dictionary of the device and eapi_call by first splitting devs into 2 lists (k,v)
 # then create usedict object to create a dict comprehension of the 2 sets of lists###
 def rundict_from_2list():
@@ -118,8 +127,10 @@ def rundict_tuple():
     return tuple1step
 print(rundict_tuple())
 
-# 2 step solution - Create rundict_from_tuple function to create a list of tuples of the device and eapi_call by first packing devs into tuple (k,v)
-# by creating from_tuple tuple that holds the key/value. Then call from_tuple in a tuple_map to map###
+# 2 step solution - This will create a dict from a tuple that we first instantiate (this is ultimately the same as using
+# .items() but manually) Create rundict_from_tuple function to create a list of tuples of the device and eapi_call by
+# first packing devs into tuple (k,v) by creating from_tuple tuple that holds the key/value. Then create a dict of
+# device + eapi called tuple_map to map each tuple in from_tuple.
 def rundict_from_tuple():
     from_tuple = [(k, v) for k, v in devs.items()]
     run_tuple = dict(map(lambda x: (x[0], Buildit(x[1]).cmds(cmds)), from_tuple))
