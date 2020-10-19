@@ -149,13 +149,45 @@ def execute_():
     return dict_of_objs
 
 #execute2 - make an object "iterator_of_objs" with map calling the "devs.values()". This will hold the class objects in
-#an iterator. Then zip the "iterator_of_objs" with the "devs.keys{}" to make a dict with keys.objs dict.
+#an iterator. Then zip the "iterator_of_objs" with the "devs.keys()" to make a dict called "dict_of_kv) with "iterator_of_objs" dict.
 def execute2():
     iterator_of_objs = map(lambda x: Buildit(x).cmd(cmds), devs.values())
     dict_of_objs = dict(zip(devs.keys(), iterator_of_objs))
     return dict_of_objs
 
-#execute 3 - use a dictionary comprehension to create a dict of class objects using typical k, v in devs.items()
+#execute3 - use a dictionary comprehension to create a dict of class objects using typical k, v in devs.items()
 def execute3():
     dict_of_objs = {k: Buildit(v).cmd(cmds) for k, v in devs.items()}
     return dict_of_objs
+
+#execute4 - make a dict called dict_of_lists by zipping 2 list comprehensions. - First list is keys, second is Buildit(values).
+def execute4():
+    dict_of_lists = {zip([key for key in devs.keys()], [Buildit(value).cmds(cmds) for value in devs.values()])}
+    #or dict_of_lists = dict(zip([key for key in devs.keys()], [Buildit(value).cmds(cmds) for value in devs.values()]))
+    return dict_of_lists
+execute4()
+
+# #have some fun with mac addresses
+# macadd = '1234.5678.abcd'
+# #these 2 examples below normalize the xxxx.xxxx.xxxx format into just 12 characters
+# stripmac = macadd.replace('.', '')
+# stripmac2 = ''.join(macadd.split('.'))
+# print(stripmac)
+# print(stripmac2)
+#
+# #format the xx:xx:xx:xx:xx:xx mac address using a join iterator
+# newmac1 = ':'.join(stripmac[x:x+2] for x in range(0,len(stripmac),2))
+# print(newmac1)
+#
+# newmac2 = ':'.join(stripmac[x] + stripmac[x + 1] for x in range(0, len(stripmac), 2))
+# print(newmac2)
+# #format the xx:xx:xx:xx:xx:xx mac address using a join iterator
+#
+# maclist2 = ':'.join(stripmac2[x] + stripmac2[x + 1] for x in range(0, len(stripmac2), 2))
+# print('maclist2', maclist2)
+# print(maclist2)
+# numlist2 = [1,2,3,4,5,6]
+# print(numlist2[:len(numlist2)])
+#
+# newmac3 = ':'.join(x + y for x, y in zip(stripmac[::2], stripmac[1::2]))
+# print(newmac3)

@@ -173,13 +173,26 @@ def execute1():
     print('nutz', dictofobjs)
 execute1()
 
-#execute2 - Use Zip! make an object "iterator_of_objs" with map calling the "devs.values()". This will hold the class objects in
-#an iterator. Then zip the "iterator_of_objs" with the "devs.keys{}" to make a dict with keys.objs dict.
+#execute2 - make an object "iterator_of_objs" with map calling the "devs.values()". This will hold the class objects in
+#an iterator. Then zip the "iterator_of_objs" with the "devs.keys()" to make a dict called "dict_of_kv) with "iterator_of_objs" dict.
+def execute2():
+    iterator_of_objs = map(lambda x: Buildit(x).cmds(cmds), devs.values())
+    dict_of_keys = dict(zip(devs.keys(), iterator_of_objs))
+    return dict_of_keys
+print(execute2())
 
 
+#execute3 - use a dictionary comprehension to create a dict of class objects using typical k, v in devs.items()
+def execute3():
+    mydict = {k: Buildit(v).cmds(cmds) for k, v in devs.items()}
+    return mydict
+execute3()
 
-#execute 3 - use a dictionary comprehension to create a dict of class objects using typical k, v in devs.items()
-
+#execute4 - make a dict called dict_of_lists by zipping 2 list comprehensions. - First list is keys, second is Buildit(values).
+def execute4():
+    dict_of_lists = dict(zip([key for key in devs.keys()], [Buildit(value).cmds(cmds) for value in devs.values()]))
+    return dict_of_lists
+print(execute4())
 print('\n' * 3)
 
 # #have some fun with mac addresses
