@@ -96,11 +96,11 @@ class Buildit():
         self.ss = Server(self.url)
 
     def cmds(self, cmd):
-        response = self.ss.runCmds(1, [cmd])
+        response = self.ss.runCmds(1, [cmd])[0]['modelName']
         return response
 
 
-devs = {'c1': '192.168.10.1'}
+devs = {'c1': '192.168.10.1', 'rfw': '192.168.10.49'}
 cmds = 'show version'
 
 
@@ -165,9 +165,13 @@ print(rundict_from_tuple())
 #Create a list of devs.
 #Cycle through the dictionary "devs" by using a range(len(devs)) and store them in another dict call "dict_of_objs"
 
-
-
-
+def execute1():
+    listofips = [x[1] for x in devs.items()]
+    listofips2 = [devs[key] for key in devs] #this will call the key, which will respond with value
+    listofdevs = [x for x in devs.keys()]
+    dictofobjs = {listofdevs[x]: Buildit(listofips[x]).cmds(cmds) for x in range(len(devs))}
+    print('nutz', dictofobjs)
+execute1()
 
 #execute2 - Use Zip! make an object "iterator_of_objs" with map calling the "devs.values()". This will hold the class objects in
 #an iterator. Then zip the "iterator_of_objs" with the "devs.keys{}" to make a dict with keys.objs dict.
